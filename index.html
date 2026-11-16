@@ -40,7 +40,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 .brand{font-size:20px;font-weight:700;letter-spacing:.3px;flex:1}
 .monthnav{display:flex;align-items:center;gap:6px}
 .monthnav b{font-size:14px;font-weight:500;min-width:92px;text-align:center;font-variant-numeric:tabular-nums}
-.home-body{flex:1;min-height:0;display:flex;flex-direction:column;gap:10px;padding:0 18px 12px}
+.home-body{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:0 18px 12px}
 .summary{background:var(--ink);color:#fff;border-radius:20px;padding:14px 16px;display:flex;flex-direction:column;gap:8px;flex:none}
 .sum-top{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#B8C2CE}
 .sum-top b{font-family:var(--font-num);font-weight:500;color:#fff;margin-left:4px}
@@ -59,7 +59,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 .pending b{font-weight:700}
 .section-title{display:flex;justify-content:space-between;align-items:baseline;font-size:14px;font-weight:700;flex:none}
 .section-title small{font-weight:400;color:var(--muted);font-size:12px}
-.list{flex:1;min-height:0;overflow-y:auto;background:var(--card);border:1px solid var(--line);border-radius:16px;overscroll-behavior:contain}
+.list{flex:none;overflow:clip;background:var(--card);border:1px solid var(--line);border-radius:16px}
 .dayhead{position:sticky;top:0;z-index:1;display:flex;justify-content:space-between;background:#F0F3F6;color:var(--muted);font-size:12px;padding:5px 14px;font-variant-numeric:tabular-nums}
 .row{display:flex;align-items:center;gap:12px;padding:11px 14px;border:0;border-bottom:1px solid var(--line);cursor:pointer;background:none;width:100%;text-align:left;color:inherit}
 .row:hover{background:#FAFBFC}
@@ -136,7 +136,7 @@ input.num{font-family:var(--font-num);font-size:20px}
         <div class="legend" id="legend"></div>
       </div>
       <button class="pending" id="pending" type="button" hidden></button>
-      <div class="section-title"><span id="list-title">本月紀錄</span><small>上下滑動查看 · 點一筆可修改</small></div>
+      <div class="section-title"><span id="list-title">本月紀錄</span><small>點一筆可修改</small></div>
       <div class="list" id="list"></div>
     </div>
     <footer class="actions">
@@ -363,8 +363,8 @@ $("pending").addEventListener("click",()=>{
   const r=db.records.filter(x=>ymOf(x.date)===view&&!x.cat).sort((a,b)=>b.date.localeCompare(a.date)||b.id-a.id)[0];
   if(r) openRecord(r.id,"edit");
 });
-$("m-prev").addEventListener("click",()=>{view=shiftMonth(view,-1); renderHome(); $("list").scrollTop=0;});
-$("m-next").addEventListener("click",()=>{if(view<CUR_YM){view=shiftMonth(view,1); renderHome(); $("list").scrollTop=0;}});
+$("m-prev").addEventListener("click",()=>{view=shiftMonth(view,-1); renderHome(); document.querySelector(".home-body").scrollTop=0;});
+$("m-next").addEventListener("click",()=>{if(view<CUR_YM){view=shiftMonth(view,1); renderHome(); document.querySelector(".home-body").scrollTop=0;}});
 
 /* budget sheet */
 const BPRE=[5000,6000,8000,10000];
